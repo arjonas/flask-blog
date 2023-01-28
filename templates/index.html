@@ -1,0 +1,94 @@
+{% include 'head.html' %}
+
+
+    <body>
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+            <div class="container px-4 px-lg-5">
+                 {% if current_user.is_authenticated %}
+                <a class="navbar-brand" href="index.html">Blog deDev - {{current_user.username}}</a>
+                {% else %}
+                <a class="navbar-brand" href="index.html">Blog deDev</a>
+                {% endif %}
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{url_for('home')}}">Home</a></li>
+                        {% if current_user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{url_for('sobre', id=current_user.id)}}">Sobre</a></li>
+                        {% else %}
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{url_for('sobre', id=0)}}">Sobre</a></li>
+                        {% endif %}
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{url_for('contato')}}">Contato</a></li>
+                        {% if current_user.is_authenticated %}
+                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{url_for('logout')}}">Logout</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{url_for('banimento')}}">Banir</a></li>
+
+                        {% else %}
+
+                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{url_for('login')}}">Login</a></li>
+                             <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{url_for('registrar')}}">Sign-in</a></li>
+
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page Header-->
+        {% include 'header.html' %}
+        <!-- Main Content-->
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <!-- Post preview-->
+                    <div class="post-preview">
+                        <a href="post.html">
+                            <h2 class="post-title"></h2>
+                            <h3 class="post-subtitle"></h3>
+
+                        </a>
+                            News
+
+                    </div>
+                    <!-- Divider-->
+
+                    {% for post in posts %}
+
+
+                    <hr class="my-4" />
+                    <!-- Post preview-->
+                    <div class="post-preview">
+                        <a href={{url_for('noticia', id_post=post.id)}}><h2 class="post-title">{{post.titulo}}</h2></a>
+                        <p class="post-meta">
+                            Postato
+
+                            em {{post.data}}
+                        </p>
+                    </div>
+                        {% if current_user.get_id() == '1' %}
+                        <a href="{{url_for('deleta_post', id_post_a_deletar = post.id)}}"> ❌</a>
+                        {% endif %}
+                    {% endfor %}
+                    <!-- Divider-->
+
+                    <!-- Pager-->
+
+                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="{{url_for('todos_posts')}}">   Posts antigos →</a></div>
+
+                   {% if current_user.get_id() == '1' %}
+                    <div class="d-flex justify-content-end mb-4"><a style="color:yellow" class="btn  btn-primary text-uppercase" href="{{url_for('novo_post')}}">Adicionar um novo Post →</a></div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+        <!-- Footer-->
+        {% include 'footer.html' %}
+        <!-- Bootstrap core JS-->
+
+    </body>
+</html>
