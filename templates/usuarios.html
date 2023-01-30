@@ -1,0 +1,91 @@
+{% include 'head.html' %}
+
+<body>
+
+
+
+<div class="d-flex justify-content-right">
+
+<a style="margin-bottom:6%;" class="mx-auto" href="{{url_for('home')}}">Inicio</a>
+
+</div>
+<div class="d-flex justify-content-center blocoform">
+<div class="form2">
+    <div class="input-group rounded mx-auto">
+    <form method="POST">
+  <input type="search" id="input" placeholder="Search user" oninput="enviandoDado()" aria-label="Search" aria-describedby="search-addon" />
+    <i class="fas fa-search"></i>
+  </span>
+        </form>
+</div>
+</div>
+
+
+
+
+
+<div class="users">
+
+{% for user in usuarios %}
+
+<h3>{{user}} <a style="color:red;" href="{{url_for('banir', name = user)}}"> x banir</a></h3>
+
+{% endfor %}
+
+    </div>
+</div>
+
+
+
+</body>
+
+
+
+<script>
+
+
+
+
+    function enviandoDado() {
+
+
+        var data =  document.getElementById('input').value;
+
+        var usuarios_array = {{ usuarios|tojson }};
+
+
+
+        if (data) {
+        
+        var div = document.querySelector('.users');  
+        
+        let pesquisaArray = usuarios_array.filter(user => user.startsWith(data));
+
+
+         let conteud =''
+           for (let i = 0; i < pesquisaArray.length; i++) {
+                console.log(0)
+                // Adicionando item atual a variável
+                conteud += "<h3>"+pesquisaArray[i]+"<a href='/banir/"+usuarios_array[i]+"'> x  banir</a></h3>";
+
+
+
+        }
+            console.log(conteud)
+            div.innerHTML = conteud;
+
+        }else {
+
+
+           var div = document.querySelector('.users');
+            console.log(1)
+           let conteudo =''
+           for (let i = 0; i < usuarios_array.length; i++) {
+                // Adicionando item atual a variável
+                conteudo += "<h3>"+usuarios_array[i]+"<a href='/banir/"+usuarios_array[i]+"'> x banir</a></h3>";
+
+            }
+            console.log(conteudo)
+            div.innerHTML = conteudo;
+  }}
+</script>
